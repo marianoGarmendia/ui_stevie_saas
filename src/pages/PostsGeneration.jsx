@@ -56,7 +56,7 @@ export default function PostsGeneration() {
       <div className="grid gap-6">
         {post.length > 0 &&
           post.map((post) => (
-            <Card key={post.id} className="max-w-2xl mx-auto">
+            <Card key={post.id} className="w-[600px]  mx-auto">
               <div className="p-4 border-b flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gray-200" />
@@ -92,7 +92,7 @@ export default function PostsGeneration() {
                 </div>
               </div>
 
-              <div className="aspect-square relative">
+              <div className="aspect-square relative h-[350px]">
                 <img
                   src={post.image}
                   alt="Post preview"
@@ -119,7 +119,7 @@ export default function PostsGeneration() {
                 </div>
                 <h2>{post.titulo}</h2>
                 <p className="text-sm mb-3">{post.post}</p>
-
+                {/* <ReactMarkdown>{post.post}</ReactMarkdown> */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {post.palabras_clave.map((tag) => (
                     <Badge key={tag} variant="secondary">

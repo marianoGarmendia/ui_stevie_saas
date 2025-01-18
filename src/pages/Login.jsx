@@ -10,25 +10,30 @@ import {
   CardFooter,
 } from "../components/ui/card";
 import { Label } from "../components/ui/label";
+import { useUser } from "../Context/userContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setUser } = useUser();
   const navigate = useNavigate();
+
+  const url = import.meta.env.VITE_BACKEND_AUTH_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/users/login", {
+      const response = await fetch(`${url}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -37,6 +42,7 @@ export default function Login() {
 
       const data = await response.json();
       console.log("Login successful:", data);
+      setUser(data.user);
       navigate("/home");
     } catch (err) {
       setError("Login failed. Please check your credentials and try again.");

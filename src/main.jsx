@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { PostProvider } from "./Context/PostProvider";
+import PostProvider from "./Context/PostProvider";
 import { UserProvider } from "./Context/UserProvider";
 import App from "./App";
 import "./index.css";

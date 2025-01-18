@@ -18,12 +18,13 @@ export default function Register() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const url = import.meta.env.VITE_BACKEND_AUTH_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/users/register", {
+      const response = await fetch(`${url}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

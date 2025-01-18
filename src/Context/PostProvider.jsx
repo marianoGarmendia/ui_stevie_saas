@@ -2,7 +2,7 @@ import { useState } from "react";
 import { postContext } from "./postContext";
 
 // eslint-disable-next-line react/prop-types
-export function PostProvider({ children }) {
+export default function PostProvider({ children }) {
   const [post, setPosts] = useState([]);
 
   return (

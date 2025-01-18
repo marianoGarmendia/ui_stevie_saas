@@ -13,6 +13,7 @@ import Integrations from "./pages/Integrations";
 import VirtualAgent from "./pages/VirtualAgent";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import ProtectedPage from "./pages/ProtectedPage";
 
 function App() {
   return (
@@ -21,36 +22,41 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/*"
-          element={
-            <div className="flex h-screen bg-background text-foreground">
-              <Sidebar />
-              <div className="flex-1 flex flex-col">
-                <Header />
-                <main className="flex-1 overflow-auto p-6">
-                  <Routes>
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/calendar" element={<Calendar />} />
-                    <Route
-                      path="/posts-generation"
-                      element={<PostsGeneration />}
-                    />
-                    <Route
-                      path="/media-generation"
-                      element={<MediaGeneration />}
-                    />
-                    <Route path="/my-media" element={<MyMedia />} />
-                    <Route path="/my-posts" element={<MyPosts />} />
-                    <Route path="/integrations" element={<Integrations />} />
-                    <Route path="/virtual-agent" element={<VirtualAgent />} />
-                    <Route path="/create-podcast" element={<CreatePodcast />} />
-                  </Routes>
-                </main>
+        <Route element={<ProtectedPage />}>
+          <Route
+            path="/*"
+            element={
+              <div className="flex h-screen bg-background text-foreground">
+                <Sidebar />
+                <div className="flex-1 flex flex-col">
+                  <Header />
+                  <main className="flex-1 overflow-auto p-6">
+                    <Routes>
+                      <Route path="/home" element={<Home />} />
+                      <Route path="/calendar" element={<Calendar />} />
+                      <Route
+                        path="/posts-generation"
+                        element={<PostsGeneration />}
+                      />
+                      <Route
+                        path="/media-generation"
+                        element={<MediaGeneration />}
+                      />
+                      <Route path="/my-media" element={<MyMedia />} />
+                      <Route path="/my-posts" element={<MyPosts />} />
+                      <Route path="/integrations" element={<Integrations />} />
+                      <Route path="/virtual-agent" element={<VirtualAgent />} />
+                      <Route
+                        path="/create-podcast"
+                        element={<CreatePodcast />}
+                      />
+                    </Routes>
+                  </main>
+                </div>
               </div>
-            </div>
-          }
-        />
+            }
+          />
+        </Route>
       </Routes>
     </HashRouter>
   );

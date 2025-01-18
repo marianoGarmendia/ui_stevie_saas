@@ -26,8 +26,10 @@ import {
   Copy,
   Tags,
   Save,
+  Loader2,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 // import { useUser } from "../Context/userContext";
 import { usePost } from "../Context/postContext";
@@ -54,6 +56,8 @@ export default function Home() {
   const [currentKeyword, setCurrentKeyword] = useState("");
   const [selectedTone, setSelectedTone] = useState(tones[0]);
   const [postTheme, setPostTheme] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   // const { user, setUser } = useUser();
   const { post, setPosts } = usePost();
 
@@ -79,10 +83,13 @@ export default function Home() {
     setKeywords(keywords.filter((keyword) => keyword !== keywordToRemove));
   };
 
+  const url = import.meta.env.VITE_BACKEND_GENERATION_URL;
   // Hacer validaciones de que todos los campos estan completos, ademas sacar la funcion fuera del componente y también hacer un loading, y un mensaje de error si no se pudo generar el post, y si se genero un mensaje de exito, y si se genero un post, mostrarlo en pantalla y dar la opción de guardarlo y tener un contexto mas global para poder acceder al post desde distintos componentes
   const generatingPost = async () => {
+    // fFalta evaluar si esta vacío el contenido no hace la peticion
+    setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/generate-post", {
+      const response = await fetch(`${url}/generate-post`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,6 +105,7 @@ export default function Home() {
         const post = await response.json();
         console.log(post);
         setPosts((prevPost) => [...prevPost, post]);
+        setIsLoading(false);
       } else {
         throw new Error("Error generating post");
       }
@@ -107,8 +115,8 @@ export default function Home() {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto py-12">
-      <div className="text-center mb-12">
+    <div className="container  max-w-4xl mx-auto py-12">
+      <div className="text-center flex flex-col gap-8 mb-12">
         <div className="flex justify-center mb-4">
           <span className="text-4xl">👋</span>
         </div>
@@ -209,29 +217,38 @@ export default function Home() {
           </div>
 
           <Button
-            className="w-full bg-purple-500 hover:bg-purple-600 mt-6"
-            size="lg"
             onClick={generatingPost}
+            className="w-full m-4 mx-auto"
+            disabled={isLoading}
           >
-            <WandIcon className="w-4 h-4 mr-2" />
-            Generate
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Generating Post...
+              </>
+            ) : (
+              <>
+                <WandIcon className="w-4 h-4 mr-2" />
+                <span>Generate Post</span>
+              </>
+            )}
           </Button>
         </Card>
         <div className="grid gap-6">
           {post.length > 0 &&
             post.map((post) => (
-              <Card key={post.id} className="max-w-2xl mx-auto">
+              <Card key={post.id} className="w-[600px]  mx-auto">
                 <div className="p-4 border-b flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gray-200" />
                     <span className="font-medium">{post.user}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm">
+                    {/* <Button variant="outline" size="sm">
                       <Tags className="w-4 h-4 mr-2" />
                       Insert tags
-                    </Button>
-                    <Button
+                    </Button> */}
+                    {/* <Button
                       variant="outline"
                       size="sm"
                       className="text-teal-500"
@@ -256,11 +273,11 @@ export default function Home() {
                           Share
                         </DropdownMenuItem>
                       </DropdownMenuContent>
-                    </DropdownMenu>
+                    </DropdownMenu> */}
                   </div>
                 </div>
 
-                <div className="aspect-square relative">
+                <div className="aspect-square relative h-[350px]">
                   <img
                     src={post.image}
                     alt="Post preview"
@@ -270,24 +287,31 @@ export default function Home() {
 
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-4">
+                    {/* <div className="flex items-center gap-4">
                       <Button variant="ghost" size="icon">
                         <Heart className="w-4 h-4" />
                       </Button>
                       <Button variant="ghost" size="icon">
                         <MessageCircle className="w-4 h-4" />
                       </Button>
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon"> 
                         <Share2 className="w-4 h-4" />
                       </Button>
-                    </div>
-                    <Button variant="ghost" size="icon">
+                    </div> */}
+                    {/* <Button variant="ghost" size="icon">
                       <Bookmark className="w-4 h-4" />
-                    </Button>
+                    </Button> */}
                   </div>
-                  <h2>{post.titulo}</h2>
-                  <p className="text-sm mb-3">{post.post}</p>
-                  <ReactMarkdown>{post.post}</ReactMarkdown>
+                  <h2 className="text-start font-black">{post.titulo}</h2>
+                  {/* <p className="text-sm mb-3">{post.post}</p> */}
+                  <br />
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    className="text-justify"
+                  >
+                    {post.post}
+                  </ReactMarkdown>
+                  {/* <ReactMarkdown>{post.post}</ReactMarkdown> */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {post.palabras_clave.map((tag) => (
                       <Badge key={tag} variant="secondary">
@@ -295,7 +319,6 @@ export default function Home() {
                       </Badge>
                     ))}
                   </div>
-
                   <div className="flex justify-end">
                     <Button className="bg-teal-500 hover:bg-teal-600">
                       Publish
