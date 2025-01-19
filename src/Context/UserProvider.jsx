@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { userContext } from "./userContext";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_AUTH_URL;
 
 // eslint-disable-next-line react/prop-types
 export function UserProvider({ children }) {
