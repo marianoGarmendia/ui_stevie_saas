@@ -20,6 +20,7 @@ export default function CreatePodcast() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [audioSrc, setAudioSrc] = useState(null);
+  const [instructions, setInstructions] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,15 +40,13 @@ export default function CreatePodcast() {
     const formData = new FormData();
     formData.append("podcast_file", file);
     formData.append("email", email);
+    formData.append("instructions", instructions);
 
     try {
-      const response = await fetch(
-        `${api_url}/uploads/podcast-file`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${api_url}/uploads/podcast-file`, {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) {
         throw new Error("Failed to upload");
@@ -101,6 +100,18 @@ export default function CreatePodcast() {
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="podcast-instructions">
+                Instrucciones para el podcast
+              </Label>
+              <Input
+                id="podcast-instructions"
+                type="text"
+                // accept=".pdf"
+                onChange={(e) => setInstructions(e.target.value)}
+              />
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input

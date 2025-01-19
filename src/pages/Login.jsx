@@ -21,7 +21,6 @@ export default function Login() {
   const navigate = useNavigate();
 
   const url = import.meta.env.VITE_BACKEND_AUTH_URL;
-  const url_dev = "http://localhost:5000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
