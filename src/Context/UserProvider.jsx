@@ -20,7 +20,7 @@ export function UserProvider({ children }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`${api_url}/users/verifyUser`, {
+        const response = await fetch(`${BACKEND_URL}/users/verifyUser`, {
           credentials: "include",
         });
         const userRes = await response.json();
