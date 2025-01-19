@@ -13,8 +13,8 @@ export const getAudio = async () => {
   }
 
   // Convertir la respuesta a Blob
-  const blob = await response.blob();
+  // const blob = await response.blob();
 
   // Crear una URL temporal para el archivo, esta url la puedo colocar en un campo para descargar
-  const url = URL.createObjectURL(blob);
+  // const url = URL.createObjectURL(blob);
 };

@@ -20,14 +20,15 @@ export default function Login() {
   const { setUser } = useUser();
   const navigate = useNavigate();
 
-  const url = import.meta.env.VITE_BACKEND_AUTH_URL;
+  // const url = import.meta.env.VITE_BACKEND_AUTH_URL;
+  const api_url_dev = "http://localhost:5000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch(`${url}/users/login`, {
+      const response = await fetch(`${api_url_dev}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { userContext } from "./userContext";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_AUTH_URL;
+// const BACKEND_URL = import.meta.env.VITE_BACKEND_AUTH_URL;
+const api_url_dev = "http://localhost:5000";
 
 // eslint-disable-next-line react/prop-types
 export function UserProvider({ children }) {
@@ -19,7 +20,7 @@ export function UserProvider({ children }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`${BACKEND_URL}/users/verifyUser`, {
+        const response = await fetch(`${api_url_dev}/users/verifyUser`, {
           credentials: "include",
         });
         const userRes = await response.json();
