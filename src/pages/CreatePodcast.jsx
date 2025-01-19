@@ -13,6 +13,8 @@ import {
 import { Loader2 } from "lucide-react";
 // import { Toast } from "../components/ui/toast";
 
+const api_url = import.meta.env.VITE_BACKEND_AUTH_URL;
+
 export default function CreatePodcast() {
   const [file, setFile] = useState(null);
   const [email, setEmail] = useState("");
@@ -40,7 +42,7 @@ export default function CreatePodcast() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/uploads/podcast-file",
+        `${api_url}/uploads/podcast-file`,
         {
           method: "POST",
           body: formData,
