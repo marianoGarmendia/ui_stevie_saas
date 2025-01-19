@@ -6,10 +6,10 @@ export function Header() {
     <header className="border-b px-6 py-3 flex items-center justify-between">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="sm">
-          Followr
+          Stevie AI
         </Button>
         <Button variant="outline" size="sm">
-          Chat gpt-4o
+          Model gpt-4o
         </Button>
       </div>
       <div className="flex items-center gap-4">

@@ -13,8 +13,8 @@ import {
 import { Loader2 } from "lucide-react";
 // import { Toast } from "../components/ui/toast";
 
-// const api_url = import.meta.env.VITE_BACKEND_AUTH_URL;
-const api_url_dev = "http://localhost:5000";
+const api_url = import.meta.env.VITE_BACKEND_AUTH_URL;
+// const api_url_dev = "http://localhost:5000";
 
 export default function CreatePodcast() {
   const [file, setFile] = useState(null);
@@ -25,7 +25,7 @@ export default function CreatePodcast() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [audioSrc, setAudioSrc] = useState(null);
-  const [instructions, setInstructions] = useState(null);
+  const [instructions, setInstructions] = useState("");
   const textAreaRef = useRef(null);
 
   // Elimina el archivo seleccionado
@@ -81,7 +81,7 @@ export default function CreatePodcast() {
     formData.append("urlValue", urlValue);
 
     try {
-      const response = await fetch(`${api_url_dev}/uploads/podcast-file`, {
+      const response = await fetch(`${api_url}/uploads/podcast-file`, {
         method: "POST",
         body: formData,
       });
@@ -138,7 +138,9 @@ export default function CreatePodcast() {
                   ref={fileInputRef}
                   type="file"
                   accept=".pdf"
-                  onChange={(e) => setFile(e.target.files[0])}
+                  onChange={(e) => {
+                    
+                    setFile(e.target.files[0])}}
                 />
                 {file && <Button onClick={handleRemoveFile}>X</Button>}
               </div>
@@ -146,12 +148,15 @@ export default function CreatePodcast() {
             <div className="space-y-2">
               <Label htmlFor="url-upload">Write url to extract info</Label>
               <Input
+                disabled={file}
                 id="url-upload"
                 type="url"
                 // accept=".pdf"
+                value={file ? "" : urlValue}
                 required
                 onChange={(e) => setUrlValue(e.target.value)}
-              />
+                />
+                {file && (<span className="text-gray text-xs">Si quieres cargar una url elimina el pdf</span>)}
             </div>
             <div className="space-y-2">
               <Label htmlFor="podcast-instructions">
