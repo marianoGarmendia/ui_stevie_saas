@@ -26,7 +26,7 @@ export default function Register() {
     setError("");
 
     try {
-      const response = await fetch(`${api_url}/users/register`, {
+      const response = await fetch(`${url}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
