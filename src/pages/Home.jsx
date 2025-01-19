@@ -33,6 +33,7 @@ import remarkGfm from "remark-gfm";
 
 // import { useUser } from "../Context/userContext";
 import { usePost } from "../Context/postContext";
+import { useUser } from "../Context/userContext";
 
 const tones = [
   "Professional",
@@ -57,7 +58,7 @@ export default function Home() {
   const [selectedTone, setSelectedTone] = useState(tones[0]);
   const [postTheme, setPostTheme] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const {user} = useUser();
   // const { user, setUser } = useUser();
   const { post, setPosts } = usePost();
 
@@ -99,6 +100,7 @@ export default function Home() {
           palabras_clave: keywords,
           tono: selectedTone,
           tema: postTheme,
+          id: user.id
         }),
       });
       if (response.ok) {
