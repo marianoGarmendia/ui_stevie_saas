@@ -20,22 +20,22 @@ export function Sidebar() {
   return (
     <div className="w-64 border-r bg-background p-4 flex flex-col">
       <nav className="space-y-2">
-        <Link to="/home">
+        <Link to="/services">
           <Button
             variant={isActive("/") ? "default" : "ghost"}
             className="w-full justify-start"
           >
             <HomeIcon className="mr-2 h-4 w-4" />
-            Home
+            Services
           </Button>
         </Link>
-        <Link to="/calendar">
+        <Link to="/create-content">
           <Button
             variant={isActive("/calendar") ? "default" : "ghost"}
             className="w-full justify-start"
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            Calendar
+            Create Content
           </Button>
         </Link>
         <Link to="/posts-generation">

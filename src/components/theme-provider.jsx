@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useMemo } from "react";
+import PropTypes from "prop-types";
 
 const ThemeContext = createContext();
 
@@ -19,6 +20,11 @@ export const ThemeProvider = ({
       <div className={theme}>{children}</div>
     </ThemeContext.Provider>
   );
+};
+ThemeProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+  defaultTheme: PropTypes.string,
+  storageKey: PropTypes.string,
 };
 
 export const UseTheme = () => {

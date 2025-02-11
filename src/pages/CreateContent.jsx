@@ -1,10 +1,12 @@
+"use client";
+
 import { useState } from "react";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Badge } from "../components/ui/badge";
-import { DropdownMenuSeparator } from "../components/ui/dropdown-menu";
+// import { DropdownMenuSeparator } from "../components/ui/dropdown-menu";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,20 +14,14 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
 import {
-  Heart,
-  MessageCircle,
-  Bookmark,
-  MoreHorizontal,
   InstagramIcon,
   FacebookIcon,
   LinkedinIcon,
   WandIcon,
   ChevronDownIcon,
+  ImageIcon,
   XIcon,
-  Share2,
-  Copy,
-  Tags,
-  Save,
+  TrashIcon,
   Loader2,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -58,7 +54,8 @@ export default function Home() {
   const [selectedTone, setSelectedTone] = useState(tones[0]);
   const [postTheme, setPostTheme] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const {user} = useUser();
+  const [selectedImage, setSelectedImage] = useState(null);
+  const { user } = useUser();
   // const { user, setUser } = useUser();
   const { post, setPosts } = usePost();
 
@@ -67,6 +64,16 @@ export default function Home() {
     { name: "LinkedIn", icon: LinkedinIcon },
     { name: "Facebook", icon: FacebookIcon },
   ];
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.substr(0, 5) === "image") {
+      setSelectedImage(file);
+    } else {
+      setSelectedImage(null);
+    }
+    e.target.value = null;
+  };
 
   const handleKeywordInputChange = (e) => {
     setCurrentKeyword(e.target.value);
@@ -84,25 +91,28 @@ export default function Home() {
     setKeywords(keywords.filter((keyword) => keyword !== keywordToRemove));
   };
 
-  const url = import.meta.env.VITE_BACKEND_GENERATION_URL;
+  // const url = import.meta.env.VITE_BACKEND_GENERATION_URL;
+  const urlDev = "http://localhost:3000";
   // Hacer validaciones de que todos los campos estan completos, ademas sacar la funcion fuera del componente y también hacer un loading, y un mensaje de error si no se pudo generar el post, y si se genero un mensaje de exito, y si se genero un post, mostrarlo en pantalla y dar la opción de guardarlo y tener un contexto mas global para poder acceder al post desde distintos componentes
   const generatingPost = async () => {
     // fFalta evaluar si esta vacío el contenido no hace la peticion
     setIsLoading(true);
     try {
-      const response = await fetch(`${url}/generate-post`, {
+      const formData = new FormData();
+      formData.append("red_social", selectedPlatform.name);
+      formData.append("palabras_clave", JSON.stringify(keywords));
+      formData.append("tono", selectedTone);
+      formData.append("tema", postTheme);
+      formData.append("imagen", selectedImage);
+      formData.append("id", user.id);
+      console.log(formData);
+
+      const response = await fetch(`${urlDev}/generate-post`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          red_social: selectedPlatform.name,
-          palabras_clave: keywords,
-          tono: selectedTone,
-          tema: postTheme,
-          id: user.id
-        }),
+        body: formData,
       });
+      console.log(response);
+
       if (response.ok) {
         const post = await response.json();
         console.log(post);
@@ -123,11 +133,15 @@ export default function Home() {
           <span className="text-4xl">👋</span>
         </div>
         <h1 className="text-4xl font-bold mb-4">
-          Hey, Here <span className="text-teal-500">Stevie</span>!
+          <span>Generation Post </span>
+          <span className="text-teal-500">
+            Lacalle <strong className="font-bold">AI</strong>
+          </span>
         </h1>
         <p className="text-muted-foreground mb-8">
-          Let Followr suggest engaging social media posts. Just select the
-          options below and click on Generate!
+          Generá un post potenciado por IA en segundos, sin esfuerzo. Seleccioná
+          las palabras claves, la red social y sube una imagen para crear una
+          similar a la que te gustaría publicar.
         </p>
 
         <Card className="p-6">
@@ -154,10 +168,56 @@ export default function Home() {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Button variant="outline" className="gap-2">
-                <WandIcon className="w-4 h-4" />
-                AI-Image
-              </Button>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="image-upload">
+                Sube una imagen para crear una variante
+              </Label>
+              <div className="flex flex-col gap-2">
+                <Input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    document.getElementById("image-upload").click()
+                  }
+                  className="w-full"
+                >
+                  <ImageIcon className="w-4 h-4 mr-2" />
+                  {selectedImage ? "Change Image" : "Select Image"}
+                </Button>
+                {selectedImage && (
+                  <p className="text-sm text-muted-foreground">
+                    {selectedImage.name}
+                  </p>
+                )}
+              </div>
+              {selectedImage && (
+                <div className="mt-4 flex flex-col items-center">
+                  <img
+                    src={
+                      URL.createObjectURL(selectedImage) || "/placeholder.svg"
+                    }
+                    alt="Selected"
+                    className="max-w-full h-auto rounded-md"
+                  />
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => setSelectedImage(null)}
+                    className="mt-2"
+                  >
+                    <TrashIcon className="w-4 h-4 mr-2" />
+                    Delete Image
+                  </Button>
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">

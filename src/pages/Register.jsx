@@ -18,15 +18,15 @@ export default function Register() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // const url = import.meta.env.VITE_BACKEND_AUTH_URL;
-  const api_url_dev = "http://localhost:5000";
+  const url = import.meta.env.VITE_BACKEND_AUTH_URL;
+  // const api_url_dev = "http://localhost:5000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch(`${api_url_dev}/users/register`, {
+      const response = await fetch(`${url}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +87,11 @@ export default function Register() {
             <Button className="w-full" type="submit">
               Create account
             </Button>
-            <Button asChild variant="link">
+            <Button
+              asChild
+              variant="link"
+              className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
+            >
               <Link to="/login">Already have an account? Login</Link>
             </Button>
             {error && <p className="text-sm text-red-500">{error}</p>}

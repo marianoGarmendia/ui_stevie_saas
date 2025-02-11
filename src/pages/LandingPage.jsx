@@ -5,8 +5,7 @@ import lacalle_logo from "../../assets/logo-lacalle.webp";
 export default function LandingPage() {
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-screen bg-background 
-"
+      className="flex flex-col items-center justify-center min-h-screen bg-background"
     >
       <div className="mb-8">
         {/* Replace with your actual Stevie logo */}
