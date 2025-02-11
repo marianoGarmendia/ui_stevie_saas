@@ -4,15 +4,14 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import lacalle_logo from "../../assets/logo-lacalle.webp";
 
 export default function Services() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Logo placeholder */}
       <div className="flex justify-center mb-8">
-        <div className="w-32 h-32 bg-gray-200 p-4 rounded-full flex items-center justify-center text-gray-500">
-          <img src={lacalle_logo} alt="Logo de lacalle AI" />
+        <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
+          Logo
         </div>
       </div>
 
@@ -62,36 +61,23 @@ export default function Services() {
             Lleva la experiencia del cliente al siguiente nivel con agentes que
             no solo responden preguntas, sino que también:
           </p>
-          <ul className="text-lg">
-            <li>
-              Agendan citas: Facilitan la programación de reuniones o servicios.
-            </li>
-            <li>
-              Envían correos electrónicos: Gestionan comunicaciones de
-              seguimiento o información adicional.
-            </li>
-            <li>
-              Realizan scraping web: Obtienen información relevante de la web
-              para tus necesidades específicas.
-            </li>
-            <li>
-              Se activan mediante formularios de contacto: Responden
-              automáticamente a las consultas recibidas.
-            </li>
-            <li>
-              Consultan servicios externos: Integran datos de otras plataformas
-              para respuestas más completas.
-            </li>
-            <li>
-              Formatean información: Presentan datos de manera clara y
-              organizada.
-            </li>
-            <li>
-              Generan contenido: Crean textos atractivos y relevantes para
-              diversas aplicaciones.
-            </li>
+          <ul className="text-lg space-y-2 mt-4">
+            {[
+              "Agendan citas: Facilitan la programación de reuniones o servicios.",
+              "Envían correos electrónicos: Gestionan comunicaciones de seguimiento o información adicional.",
+              "Realizan scraping web: Obtienen información relevante de la web para tus necesidades específicas.",
+
+              "Consultan servicios externos: Integran datos de otras plataformas para respuestas más completas.",
+              "Formatean información: Presentan datos de manera clara y organizada.",
+              "Generan contenido: Crean textos atractivos y relevantes para diversas aplicaciones.",
+            ].map((item, index) => (
+              <li key={index} className="flex items-start">
+                <span className="inline-block w-2 h-2 bg-purple-500 rounded-full mr-2 mt-2"></span>
+                <span>{item}</span>
+              </li>
+            ))}
           </ul>
-          <p className="text-lg">
+          <p className="text-lg mt-4">
             Estas capacidades amplían el alcance de las interacciones
             tradicionales, ofreciendo un valor añadido significativo a tu
             negocio.
