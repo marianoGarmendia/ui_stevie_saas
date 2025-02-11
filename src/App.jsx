@@ -14,8 +14,8 @@ import Integrations from "./pages/Integrations";
 import VirtualAgent from "./pages/VirtualAgent";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Services from "./pages/Services";
 import ProtectedPage from "./pages/ProtectedPage";
-import Services from "./pages/services";
 
 function App() {
   return (
