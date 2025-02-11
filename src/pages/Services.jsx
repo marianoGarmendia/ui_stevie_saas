@@ -4,14 +4,15 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
+import lacalle_logo from "../../assets/logo-lacalle.webp";
 
 export default function Services() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Logo placeholder */}
       <div className="flex justify-center mb-8">
-        <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
-          Logo
+        <div className="w-32 h-32 bg-gray-200 rounded-full p-4 flex items-center justify-center text-gray-500">
+          <img src={lacalle_logo} alt="Logo lacalle AI" />
         </div>
       </div>
 
