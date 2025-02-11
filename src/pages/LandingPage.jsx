@@ -1,15 +1,20 @@
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
-import stevie_logo from "../../assets/stevie-ai-agency_2.png";
+import lacalle_logo from "../../assets/logo-lacalle.webp";
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen bg-background 
+"
+    >
       <div className="mb-8">
         {/* Replace with your actual Stevie logo */}
-        <img src={stevie_logo} alt="Stevie Logo" className="w-64" />
+        <img src={lacalle_logo} alt="Lacalle Logo" className="w-64" />
       </div>
-      <h1 className="text-4xl font-bold mb-8">Welcome to Stevie</h1>
+      <h1 className="text-4xl font-bold mb-8">
+        <strong className="text-[#9d247d] font-extrabold">AI</strong>{" "}
+      </h1>
       <div className="space-x-4">
         <Button asChild>
           <Link to="/login">Login</Link>
