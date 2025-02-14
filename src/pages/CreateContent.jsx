@@ -55,6 +55,9 @@ export default function Home() {
   const [postTheme, setPostTheme] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [alertSizeImage, setAlertSizeImage] = useState(false);
+  const [imageAi, setImageAi] = useState(false);
+
   const { user } = useUser();
   // const { user, setUser } = useUser();
   const { post, setPosts } = usePost();
@@ -67,12 +70,34 @@ export default function Home() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.type.substr(0, 5) === "image") {
-      setSelectedImage(file);
-    } else {
-      setSelectedImage(null);
-    }
-    e.target.value = null;
+
+    if (!file) return;
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      console.log(img.width, img.height + "imagen onload");
+
+      if (img.width < 300 || img.height < 300) {
+        setAlertSizeImage(true);
+        setTimeout(() => setAlertSizeImage(false), 3000);
+        // alert("La imagen debe tener al menos 300x300 píxeles.");
+      } else {
+        if (file && file.type.substr(0, 5) === "image") {
+          setSelectedImage(file);
+          setImageAi(false);
+        } else {
+          setSelectedImage(null);
+        }
+        e.target.value = null;
+      }
+    };
+  };
+
+  const handleAiImageToggle = () => {
+    setImageAi(!imageAi);
+    setSelectedImage(null);
   };
 
   const handleKeywordInputChange = (e) => {
@@ -91,8 +116,8 @@ export default function Home() {
     setKeywords(keywords.filter((keyword) => keyword !== keywordToRemove));
   };
 
-  // const url = import.meta.env.VITE_BACKEND_GENERATION_URL;
-  const urlDev = "http://localhost:3000";
+  const url = import.meta.env.VITE_BACKEND_GENERATION_URL;
+  // const urlDev = "http://localhost:3000";
   // Hacer validaciones de que todos los campos estan completos, ademas sacar la funcion fuera del componente y también hacer un loading, y un mensaje de error si no se pudo generar el post, y si se genero un mensaje de exito, y si se genero un post, mostrarlo en pantalla y dar la opción de guardarlo y tener un contexto mas global para poder acceder al post desde distintos componentes
   const generatingPost = async () => {
     // fFalta evaluar si esta vacío el contenido no hace la peticion
@@ -105,9 +130,10 @@ export default function Home() {
       formData.append("tema", postTheme);
       formData.append("imagen", selectedImage);
       formData.append("id", user.id);
+      formData.append("setImage", true);
       console.log(formData);
 
-      const response = await fetch(`${urlDev}/generate-post`, {
+      const response = await fetch(`${url}/generate-post`, {
         method: "POST",
         body: formData,
       });
@@ -168,12 +194,28 @@ export default function Home() {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
+              <Button
+                variant={imageAi ? "default" : "outline"}
+                className="gap-2"
+                onClick={handleAiImageToggle}
+                disabled={selectedImage !== null}
+              >
+                <WandIcon className="w-4 h-4" />
+                AI Image
+              </Button>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="image-upload">
-                Sube una imagen para crear una variante
+                Sube una imagen y crea una variante con IA
               </Label>
+              <div>
+                {alertSizeImage && (
+                  <p className="text-red-600">
+                    La imagen debe ser mayor a 300 x 300
+                  </p>
+                )}
+              </div>
               <div className="flex flex-col gap-2">
                 <Input
                   id="image-upload"
@@ -181,6 +223,7 @@ export default function Home() {
                   accept="image/*"
                   onChange={handleImageChange}
                   className="hidden"
+                  disabled={imageAi}
                 />
                 <Button
                   variant="outline"
@@ -188,6 +231,7 @@ export default function Home() {
                     document.getElementById("image-upload").click()
                   }
                   className="w-full"
+                  disabled={imageAi}
                 >
                   <ImageIcon className="w-4 h-4 mr-2" />
                   {selectedImage ? "Change Image" : "Select Image"}
@@ -195,6 +239,11 @@ export default function Home() {
                 {selectedImage && (
                   <p className="text-sm text-muted-foreground">
                     {selectedImage.name}
+                  </p>
+                )}
+                {imageAi && (
+                  <p className="text-sm text-muted-foreground">
+                    AI Image will be generated
                   </p>
                 )}
               </div>
@@ -339,11 +388,11 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="aspect-square relative h-[350px]">
+                <div className="aspect-auto  flex items-center justify-center">
                   <img
                     src={post.image}
                     alt="Post preview"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover border"
                   />
                 </div>
 
