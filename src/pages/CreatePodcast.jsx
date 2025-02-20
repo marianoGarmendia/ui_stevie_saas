@@ -139,8 +139,8 @@ export default function CreatePodcast() {
                   type="file"
                   accept=".pdf"
                   onChange={(e) => {
-                    
-                    setFile(e.target.files[0])}}
+                    setFile(e.target.files[0]);
+                  }}
                 />
                 {file && <Button onClick={handleRemoveFile}>X</Button>}
               </div>
@@ -155,8 +155,12 @@ export default function CreatePodcast() {
                 value={file ? "" : urlValue}
                 required
                 onChange={(e) => setUrlValue(e.target.value)}
-                />
-                {file && (<span className="text-gray text-xs">Si quieres cargar una url elimina el pdf</span>)}
+              />
+              {file && (
+                <span className="text-gray text-xs">
+                  Si quieres cargar una url elimina el pdf
+                </span>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="podcast-instructions">
@@ -173,6 +177,8 @@ export default function CreatePodcast() {
                   setInstructions(e.target.value);
                 }}
                 className="
+                bg-background 
+                text-foreground
                   w-full
                   p-2
                   border
@@ -180,7 +186,8 @@ export default function CreatePodcast() {
                   rounded
                   focus:outline-none
                   focus:border-blue-500
-                  
+                  bg-gray
+                  text-white
                   overflow-hidden
                 "
                 placeholder="Instrucciones para decirle a la IA las cosas que debe tener en cuenta a la hora de crear el podcast"

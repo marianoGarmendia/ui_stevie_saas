@@ -7,6 +7,7 @@ import LandingPage from "./pages/LandingPage";
 import CreatePodcast from "./pages/CreatePodcast";
 
 import PostsGeneration from "./pages/PostsGeneration";
+import CompanyContext from "./pages/CompanyContext";
 import MediaGeneration from "./pages/MediaGeneration";
 import MyMedia from "./pages/MyMedia";
 import MyPosts from "./pages/MyPosts";
@@ -47,6 +48,10 @@ function App() {
                         <Route
                           path="/media-generation"
                           element={<MediaGeneration />}
+                        />
+                        <Route
+                          path="/company-context"
+                          element={<CompanyContext />}
                         />
                         <Route path="/my-media" element={<MyMedia />} />
                         <Route path="/my-posts" element={<MyPosts />} />

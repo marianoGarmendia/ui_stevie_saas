@@ -74,6 +74,10 @@ export default function Home() {
     if (!file) return;
 
     const img = new Image();
+    console.log("url.createObjectURL(file)");
+
+    console.log(URL.createObjectURL(file));
+
     img.src = URL.createObjectURL(file);
 
     img.onload = () => {
@@ -85,6 +89,8 @@ export default function Home() {
         // alert("La imagen debe tener al menos 300x300 píxeles.");
       } else {
         if (file && file.type.substr(0, 5) === "image") {
+          console.log(file);
+
           setSelectedImage(file);
           setImageAi(false);
         } else {

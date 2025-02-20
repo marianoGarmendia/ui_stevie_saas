@@ -47,6 +47,17 @@ export function Sidebar() {
             Posts Generation
           </Button>
         </Link>
+
+        <Link to="/company-context">
+          <Button
+            variant={isActive("/company-context") ? "default" : "ghost"}
+            className="w-full justify-start"
+          >
+            <FileTextIcon className="mr-2 h-4 w-4" />
+            Company Context
+          </Button>
+        </Link>
+
         <Link to="/media-generation">
           <Button
             variant={isActive("/media-generation") ? "default" : "ghost"}
