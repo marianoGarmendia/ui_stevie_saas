@@ -10,13 +10,18 @@ import {
   CardContent,
   CardFooter,
 } from "../components/ui/card";
-import { Loader2 } from "lucide-react";
+import  VoiceSelector  from "../components/VoiceSelector";
+import { useVoice } from "../Context/useVoices";
+import { Check, Loader2 } from "lucide-react";
+
 // import { Toast } from "../components/ui/toast";
 
 const api_url = import.meta.env.VITE_BACKEND_AUTH_URL;
 // const api_url_dev = "http://localhost:5000";
 
 export default function CreatePodcast() {
+  const { firstLocutor, secondLocutor, setFirstLocutor , setSecondLocutor } = useVoice();
+
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -54,6 +59,9 @@ export default function CreatePodcast() {
     setIsLoading(true);
     setAudioSrc(null);
 
+    if (!firstLocutor.type | !firstLocutor.option) return
+    if (!secondLocutor.type | !secondLocutor.option) return
+
     if (!email) {
       //   Toast({
       //     title: "Error",
@@ -79,6 +87,8 @@ export default function CreatePodcast() {
     formData.append("email", email);
     formData.append("instructions", instructions);
     formData.append("urlValue", urlValue);
+    formData.append("firstLocutor", JSON.stringify(firstLocutor));
+    formData.append("secondLocutor", JSON.stringify(secondLocutor));
 
     try {
       const response = await fetch(`${api_url}/uploads/podcast-file`, {
@@ -106,6 +116,9 @@ export default function CreatePodcast() {
       setFile(null);
       setEmail("");
       setInstructions(null);
+      setUrlValue("");
+      setFirstLocutor({type:null, option:null});
+      setSecondLocutor({type:null, option:null});
     } catch (error) {
       console.error("Upload error:", error);
       //   Toast({
@@ -193,6 +206,9 @@ export default function CreatePodcast() {
                 placeholder="Instrucciones para decirle a la IA las cosas que debe tener en cuenta a la hora de crear el podcast"
                 style={{ height: "auto" }} // Aseguramos que inicie con auto
               />
+            </div>
+            <div>
+            <VoiceSelector />
             </div>
 
             <div className="space-y-2">
